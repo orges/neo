@@ -2849,7 +2849,7 @@ def handle_config(args):
     """Handle --config flag operations."""
     from neo.config import NeoConfig
 
-    VALID_PROVIDERS = ['openai', 'anthropic', 'google', 'azure', 'ollama', 'local']
+    VALID_PROVIDERS = ['openai', 'anthropic', 'google', 'zhipuai', 'azure', 'ollama', 'local']
     EXPOSED_FIELDS = ['provider', 'model', 'api_key', 'base_url', 'auto_install_updates']
 
     def mask_secret(value: str) -> str:
@@ -3313,7 +3313,7 @@ def main():
     except Exception as e:
         error_output = {
             "error": f"Failed to initialize LM adapter: {e}",
-            "hint": "Set NEO_PROVIDER and NEO_MODEL in config.json or environment, or set provider-specific API keys (OPENAI_API_KEY, ANTHROPIC_API_KEY, etc.)"
+            "hint": "Set NEO_PROVIDER and NEO_MODEL in config.json or environment, or set provider-specific API keys (OPENAI_API_KEY, ANTHROPIC_API_KEY, GOOGLE_API_KEY, ZHIPU_AI_API_KEY, etc.)"
         }
         print(json.dumps(error_output, indent=2))
         sys.exit(1)

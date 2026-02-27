@@ -44,6 +44,7 @@ tree-sitter = [
 anthropic = ["anthropic>=0.21.0"]
 openai = ["openai>=1.0.0"]
 google = ["google-genai>=0.2.0"]
+zhipuai = ["openai>=1.0.0"]  # Uses OpenAI-compatible API
 ollama = ["requests>=2.31.0"]
 all = [
     "anthropic>=0.21.0",

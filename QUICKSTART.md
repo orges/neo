@@ -11,6 +11,7 @@ pip install neo-reasoner[openai]
 This installs Neo with OpenAI (GPT) support. Alternatively:
 - `pip install neo-reasoner[anthropic]` for Claude
 - `pip install neo-reasoner[google]` for Gemini
+- `pip install neo-reasoner[zhipuai]` for Zhipu AI (z.ai)
 - `pip install neo-reasoner[all]` for all providers
 
 ## 2. Set API Key
@@ -135,6 +136,14 @@ pip install neo-reasoner[google]
 export GOOGLE_API_KEY=...
 neo --config set --config-key provider --config-value google
 neo --config set --config-key model --config-value gemini-2.0-flash
+```
+
+### Zhipu AI (z.ai)
+```bash
+pip install neo-reasoner[zhipuai]
+export ZHIPU_AI_API_KEY=your-api-key
+neo --config set --config-key provider --config-value zhipuai
+neo --config set --config-key model --config-value glm-5
 ```
 
 ### Local (Ollama)
