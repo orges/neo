@@ -14,7 +14,7 @@ class NeoConfig:
     """Neo configuration."""
 
     # LM Provider settings
-    provider: str = "openai"  # openai, anthropic, google, azure, local, ollama
+    provider: str = "openai"  # openai, anthropic, google, zhipuai, azure, local, ollama
     model: Optional[str] = "gpt-5.3-codex"
     api_key: Optional[str] = None
     base_url: Optional[str] = None  # For local/ollama
@@ -83,7 +83,9 @@ class NeoConfig:
             os.environ.get("NEO_API_KEY") or
             os.environ.get("OPENAI_API_KEY") or
             os.environ.get("ANTHROPIC_API_KEY") or
-            os.environ.get("GOOGLE_API_KEY")
+            os.environ.get("GOOGLE_API_KEY") or
+            os.environ.get("ZHIPU_AI_API_KEY") or
+            os.environ.get("ZAI_API_KEY")
         )
 
         # Generation settings

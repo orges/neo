@@ -2235,7 +2235,9 @@ ENVIRONMENT VARIABLES:
     ANTHROPIC_API_KEY    Anthropic API key
     OPENAI_API_KEY       OpenAI API key
     GOOGLE_API_KEY       Google API key
-    NEO_PROVIDER         LLM provider (openai|anthropic|google|ollama)
+    ZHIPU_AI_API_KEY     Zhipu AI API key
+    ZAI_API_KEY          Zhipu AI API key (alias)
+    NEO_PROVIDER         LLM provider (openai|anthropic|google|zhipuai|ollama)
     NEO_MODEL            Model name
     NEO_API_KEY          Generic API key (provider-specific keys take precedence)
 

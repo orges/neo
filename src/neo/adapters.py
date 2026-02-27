@@ -1,5 +1,5 @@
 """
-LM Adapter implementations for OpenAI, Anthropic, and local models.
+LM Adapter implementations for OpenAI, Anthropic, Google, Zhipu AI, and local models.
 """
 
 import os
@@ -13,6 +13,59 @@ except ImportError:
     pass
 
 from neo.cli import LMAdapter
+
+
+# ============================================================================
+# Zhipu AI Adapter
+# ============================================================================
+
+class ZhipuAIAdapter(LMAdapter):
+    """Adapter for Zhipu AI (ZhiPu AI) models via api.z.ai (GLM Coding Plan / PaaS).
+
+    Uses OpenAI-compatible API format. Supports GLM models including glm-5.
+    """
+
+    def __init__(
+        self,
+        model: str = "glm-5",
+        api_key: Optional[str] = None,
+        base_url: Optional[str] = None,
+    ):
+        self.model = model
+        self.api_key = api_key or os.environ.get("ZHIPU_AI_API_KEY")
+        self.base_url = base_url or "https://api.z.ai/api/coding/paas/v4"
+
+        if not self.api_key:
+            raise ValueError("Zhipu AI API key required (set ZHIPU_AI_API_KEY)")
+
+        try:
+            import openai
+            self.client = openai.OpenAI(
+                api_key=self.api_key,
+                base_url=self.base_url,
+            )
+        except ImportError:
+            raise ImportError("openai package required: pip install openai")
+
+    def generate(
+        self,
+        messages: list[dict[str, str]],
+        stop: Optional[list[str]] = None,
+        max_tokens: int = 4096,
+        temperature: float = 0.7,
+    ) -> str:
+        """Generate response using Zhipu AI API (OpenAI-compatible)."""
+        response = self.client.chat.completions.create(
+            model=self.model,
+            messages=messages,
+            max_tokens=max_tokens,
+            temperature=temperature,
+            stop=stop,
+        )
+        return response.choices[0].message.content
+
+    def name(self) -> str:
+        return f"zhipuai/{self.model}"
 
 
 # ============================================================================
@@ -423,7 +476,7 @@ def create_adapter(
     Factory function to create appropriate adapter.
 
     Args:
-        provider: One of "openai", "anthropic", "google", "azure", "local", "ollama"
+        provider: One of "openai", "anthropic", "google", "zhipuai", "azure", "local", "ollama"
         model: Model name (optional, uses provider default)
         **kwargs: Additional provider-specific arguments
 
@@ -438,6 +491,8 @@ def create_adapter(
         return AnthropicAdapter(model=model or "claude-sonnet-4-5-20250929", **kwargs)
     elif provider == "google":
         return GoogleAdapter(model=model or "gemini-2.0-flash", **kwargs)
+    elif provider == "zhipuai":
+        return ZhipuAIAdapter(model=model or "glm-4-flash", **kwargs)
     elif provider == "azure":
         return AzureOpenAIAdapter(model=model or "gpt-4", **kwargs)
     elif provider == "local":
@@ -447,5 +502,5 @@ def create_adapter(
     else:
         raise ValueError(
             f"Unknown provider: {provider}. "
-            f"Supported: openai, anthropic, google, azure, local, ollama"
+            f"Supported: openai, anthropic, google, zhipuai, azure, local, ollama"
         )

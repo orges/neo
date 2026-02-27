@@ -78,7 +78,7 @@ Neo is **_the missing context layer_** for AI Code Assistants.  It learns from e
 
 **Scoped Storage**: Facts are scoped to global, organization, or project level, stored locally in ~/.neo/facts/ for privacy and offline access.
 
-**Model-Agnostic**: Works with OpenAI, Anthropic, Google, local models, or Ollama via a simple adapter interface.
+**Model-Agnostic**: Works with OpenAI, Anthropic, Google, Zhipu AI, local models, or Ollama via a simple adapter interface.
 
 
 ## How It Works
@@ -577,8 +577,8 @@ neo --config reset
 ```
 
 **Exposed Configuration Fields:**
-- `provider` - LM provider (openai, anthropic, google, azure, ollama, local)
-- `model` - Model name (e.g., gpt-5.3-codex, claude-sonnet-4-5-20250929)
+- `provider` - LM provider (openai, anthropic, google, zhipuai, azure, ollama, local)
+- `model` - Model name (e.g., gpt-5.3-codex, claude-sonnet-4-5-20250929, glm-4-flash)
 - `api_key` - API key for the chosen provider
 - `base_url` - Base URL for local/Ollama endpoints
 - `memory_backend` - Memory backend: "fact_store" (default) or "legacy"
@@ -626,6 +626,19 @@ adapter = GoogleAdapter(model="gemini-2.0-flash")
 ```
 
 Default model: `gemini-2.0-flash`. Uses the `google-genai` SDK.
+
+### Zhipu AI (Zhipu)
+
+**Note: Requires openai package**
+
+```python
+from neo.adapters import ZhipuAIAdapter
+adapter = ZhipuAIAdapter(model="glm-5")
+```
+
+Default model: `glm-5`. Uses the OpenAI-compatible API at `https://api.z.ai/api/coding/paas/v4`.
+
+**Environment Variables:** `ZHIPU_AI_API_KEY` or `ZAI_API_KEY`
 
 ### Ollama
 
